@@ -4,7 +4,10 @@ In this tutorial, we are going to program a Bayesian inference biogeographic ana
 
 ## Study group
 
-This Tutorial, as the one in RevBayes (website) presents an application of DEC to the `silversword alliance`, a clade of angiosperm plants that are endemic to the Hawaiian Archipelago. The silversword alliance is considered one of the best examples of adaptive radiation in plants: it includes trees, shrubs, subshrubs, mat-plants, monocarpic and polycarpic rosette plants, cushion plants, and vines that occur across a broad environmental spectrum, from rainforests to desert-like settings (Baldwin & Sanderson, 1998). Because the age of the islands (Carlquist, 1959) and the age of the silversword alliance (Baldwin & Sanderson, 1998) are well known, this makes an ideal case study to explore the DEC model and its implementation within the RevBayes environment.
+This Tutorial, as the one in RevBayes (website) presents an application of DEC to the `silversword alliance`, a clade of angiosperm plants that are endemic to the Hawaiian Archipelago. It includes 35 species/subspecies within 3 genera: *Argyranthemum*, *Dubautia*, *Wilkesia*. The Hawaiian silversword alliance is embedded within the tarweed alliance, and has as closest relatives, the Western North American genera *Madial* and *Raillardiopsis*.
+The silversword alliance is considered one of the best examples of adaptive radiation in plants: it includes trees, shrubs, subshrubs, mat-plants, monocarpic and polycarpic rosette plants, cushion plants, and vines that occur across a broad environmental spectrum, from rainforests to desert-like settings (Baldwin & Sanderson, 1998). Because the age of the islands (Carlquist, 1959) and the age of the silversword alliance (Baldwin & Sanderson, 1998) are well known, this makes an ideal case study to explore the DEC model and its implementation within the RevBayes environment.
+
+![Figure1](figures/Figure1.png "Figure 1")*The silversword alliance.
 
 
 ## Data description and access
@@ -18,7 +21,7 @@ cp -p silversword.n4.range.nex data/
 cp -p silversword.tre data/
 ```
 
-Take a look at the *silversword.tre* file. It contains a dated molecular phylogeny of the **silversword alliance**: 35 species/subspecies within 3 genera: *Argyranthemum*, *Dubautia*, *Wilkesia*, with branches measured in units of time, as million years (Mya). The timetree was generated using a ITS dataset, calibrated with external evidence: based on the age of divergence from its stem relatives: Western North American genera *Madial* and *Raillardiopsis*, which was dated around the shift from a summer-wet to summer-dry climate began abruptly in western North America at 15 Ma.
+Take a look at the *silversword.tre* file. It contains a dated molecular phylogeny of the **silversword alliance** with branches measured in units of time, as million years (Mya). The timetree was generated using a ITS dataset, calibrated with external evidence: based on the age of divergence from its stem relatives, which was dated around the shift from a summer-wet to summer-dry climate began abruptly in western North America at 15 Ma.
 
 ![Figure2](figures/Figure2.png "Figure 2")*Molecular dated phylogeny of the silversword alliance.
 
