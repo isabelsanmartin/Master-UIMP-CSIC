@@ -1,0 +1,156 @@
+#!/usr/bin/rb
+# Hoy vamos a analizar la filogenia de la alianza "silversword", un grupo de angiospermas endémicas de Hawaii usando el modelo DEC en RevBayes
+# Primero, asegúrate de que tienes todos los archivos necesarios en la misma carpeta donde esta el ejecutable rb.ex
+# Ahora leemos todos los archivos necesarios: rangos de distribución, árbol, y ademas, creamos un fichero output para almacenar los resultados.
+
+# Archivos
+range_fn = "data/silversword.n4.range.nex"
+tree_fn  = "data/silversword.tre"
+out_fn   = "output_3/simple"
+
+### Primero leemos los datos de distribución en formato binario (0/1). Abre el fichero en Notepad y mira su estructura 
+dat_range_01 = readDiscreteCharacterData(range_fn)
+
+### Transformamos en números naturales (de 1-16) los rangos de distribución que pueda leer el ordenador.
+dat_range_n = formatDiscreteCharacterData(dat_range_01, "DEC")
+
+# Compara la codificación de un estado de carácter para un taxon bajo los dos tipos de codificación
+dat_range_01[1]
+dat_range_n[1]
+
+### Ahora vamos a ver las dimensiones de los datos. ¿Cuantos rangos ancestrales hay para 4 areas? Serian 2^4 = 16 
+n_areas  = dat_range_01.nchar()
+n_states = floor(2^n_areas)
+
+### Ahora creamos un fichero donde se anotarán los rangos ancestrales que se infieran.
+state_desc = dat_range_n.getStateDescriptions()
+
+# Y los escribimos en un archivo txt
+state_desc_str = "state,range\n"
+for (i in 1:state_desc.size())
+{
+    state_desc_str += (i-1) + "," + state_desc[i] + "\n"
+}
+write(state_desc_str, file=out_fn+".state_labels.txt")
+
+### Creamos movimientos para la cadena de Markov MCMC y los monitores de pantalla, y definimos el número de generaciones 
+moves = VectorMoves()
+monitors = VectorMonitors()
+n_gen = 10000
+
+###############
+# Tree models #
+###############
+
+# Ahora leemos el árbol
+tree <- readTrees(tree_fn)[1]
+
+
+#######################
+# Modelo Biogeográfico #
+#######################
+
+### Vamos a crear el modelo biogeografico DEC en varios pasos, empezando con la matriz Q de eventos anagenéticos.
+### Primero asignamos el prior para la tasa absoluta de dispersion. Utilizamos una dist. loguniforme entre dos valores.
+# En este caso entre 100 y 0.0001 eventos por millones de años.
+
+rate_bg ~ dnLoguniform(1E-4,1E2)
+rate_bg.setValue(1E-2)
+moves.append( mvScale(rate_bg, weight=4) )
+
+# Definimos la tasa de dispersión de base ("baseline") entre áreas como 1.0 (igual entre áreas) 
+dispersal_rate <- 1.0
+
+### Ahora construiremos la porción de la matriz Q que corresponde a la dispersion.
+for (i in 1:n_areas) {
+    for (j in 1:n_areas) {
+        dr[i][j] <- dispersal_rate
+    }
+}
+
+### Después asignamos el prior para la tasa absoluta de extinción (por-area)
+# Utilizamos una lognormal, que asigna una probabilidad baja a una tasa alta de extinción
+log_sd <- 0.5
+log_mean <- ln(1) - 0.5*log_sd^2
+extirpation_rate ~ dnLognormal(mean=log_mean, sd=log_sd)
+moves.append( mvScale(extirpation_rate, weight=2) )
+
+### Ahora construiremos la porción de la matriz Q que corresponde a la extinción.
+for (i in 1:n_areas) {
+    for (j in 1:n_areas) {
+        er[i][j] <- 0.0       
+    }
+    er[i][i] := extirpation_rate
+}
+
+### Finalmente construimos la matriz Q completa, que incluye dispersión y extinción
+Q_DEC := fnDECRateMatrix(dispersalRates=dr,
+                         extirpationRates=er)
+                           
+
+
+####### Hasta aquí hemos construido la parte anagenética de DEC (la matriz Q)
+###### Ahora construiremos, la parte cladogenética usando DEC, por tanto, solo permitimos los siguientes modos de especiacion:
+### a = vicarianza, s = simpatría, peripatría
+
+### Le asignamos la misma probabilidad a los dos procesos utilizando un prior llamado "simplex".
+clado_event_types <- [ "s", "a" ]
+clado_event_probs <- simplex(1,1)
+
+# A continuación construimos el modelo cladogenético en DEC  
+P_DEC := fnDECCladoProbs(eventProbs=clado_event_probs,
+                         eventTypes=clado_event_types,
+                         numCharacters=n_areas)
+
+## Finalmente, construimos el modelo completo "phylogenetic CTMC", combinando la parte anagenética (Q_DEC) y cladogenética (P_DEC)
+m_bg ~ dnPhyloCTMCClado(tree=tree,
+                           Q=Q_DEC,
+                           cladoProbs=P_DEC,
+                           branchRates=rate_bg,
+                           type="NaturalNumbers",
+                           nSites=1)
+    
+#### A continuación asignamos al modelo los datos, utilizando uno de los archivos
+
+m_bg.clamp(dat_range_n)
+
+########################################################################################
+# Establecemos Monitores que van a registrar los resultados o mostrarlos en la pantalla #
+########################################################################################
+
+##  Decidimos con cuánta frecuencia, los resultados se escriben con printgen= #
+
+monitors.append( mnScreen(printgen=100, rate_bg) )
+monitors.append( mnModel(file=out_fn+".model.log", printgen=1) )
+monitors.append( mnFile(tree, filename=out_fn+".tre", printgen=1) )
+
+# Registramos los eventos cladogenéticos (rangos ancestrales en los nodos) #
+monitors.append( mnJointConditionalAncestralState(tree=tree,
+                                                  ctmc=m_bg,
+                                                  type="NaturalNumbers",
+                                                  withTips=true,
+                                                  withStartStates=true,
+                                                  filename=out_fn+".states.log",
+                                                  printgen=1) )
+
+# Registramos los eventos anagenéticos (transiciones a lo largo de las ramas)
+                                                 
+monitors.append( mnStochasticCharacterMap(ctmc=m_bg,
+                                          filename=out_fn+".stoch.log",
+                                          printgen=10) )
+
+############
+# Análisis #
+############
+
+# Creamos el modelo "objeto" para lenguaje máquina a partir del modelo "gráfico" arriba definido
+mymodel = model(m_bg)
+
+# Creamos el objeto para el análisis "MCMC" con el modelo, monitores, y movimientos
+mymcmc = mcmc(mymodel, monitors, moves)
+
+# Corremos el análisis MCMC
+mymcmc.run(n_gen)
+
+# exit
+# quit()
