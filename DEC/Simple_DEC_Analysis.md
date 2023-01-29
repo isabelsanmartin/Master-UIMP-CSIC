@@ -23,7 +23,7 @@ Take a look at the *silversword.tre* file. It contains a dated molecular phyloge
 ![Figure2](figures/Figure2.jpg "Figure 2")*Molecular dated phylogeny of the silversword alliance.
 
 Next, take look at the *silversword.n4.range.nex*. It includes the distribution of the species encoded as presence-absence data. 
-Area coding follows those in the Figure below: **K: Kauai**: a complex formed by Kauai and Okai, **O: Ohau**, **M: Maui-Nui**: a complex formed by four islands: Maui, Nui, Lanai and Molokai, **H: Hawaii**. These four major islands groups have remained isolated by deep ocean barriers since their formation five million years ago. The islands forming the Maui-Nui complex and the Kauai complex were probably connected by shallow waters during the Ice Ages.
+Area coding follows those in the Figure below: **K: Kauai** (comprising Kauai and Okai islands), **O: Ohau** (comprising the single Ohau island), **M: Maui-Nui** (comprising a complex of four islands: Maui, Nui, Lanai and Molokai), **H: Hawaii** (comprising the single Hawaii island, the largest and only active). The current archipelago was formed through the Pacific plate moving over a magmatic hotspot in the mid northern Pacific Ocean; the oldest emerged island is Kauiai (c. 5.1 Ma). The four major islands groups (K, O, M, H) were formed at different time periods and have remained isolated by deep ocean barriers since their formation five million years ago. The islands forming the Maui-Nui complex and the Kauai complex were probably connected by shallow waters during the Ice Ages, so they are considered a single island in our analysis.
 
 ![Figure3](figures/Figure3.png "Figure 3")*Distribution range of the silversword alliance with the four *major island groups* .
 
