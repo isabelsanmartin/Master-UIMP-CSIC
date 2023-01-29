@@ -2,7 +2,8 @@
 ## Distribución espacio-temporal de las especies: técnicas analíticas
 This GitHub account contains the class lectures, scripts and data files for the practicals. Download the entire zip file or each file individually.
 1. Slides: Contains the class lectures in abbreviated PDF format (Handout format)
-2. Intro: Includes an Introduction to RevBayes.
-3. DEC practical: Simple / Epoch analyses
-4. Diversification practical
-5. BIB practical
+2. Intro: Introduction to the software RevBayes and the Rev language.
+3. Maps practical: Create your own distribution map in R
+3. DEC practicals: Run a Standard and Stratified Dispersal-Extinction-Cladogenesis analysis in RevBayes
+4. Diversification practical: Run paleoenvironmental-dependent and geographic range-dependent birth death models
+5. BIB practical: Run a Bayesian Island Biogeography analysis in BEAST
