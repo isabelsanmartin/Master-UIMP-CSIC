@@ -408,8 +408,8 @@ And a second script to generate a figure with the anagenetic (stochastic mapping
 ## Questions
 
 1. Which is the area of origin of the silverword alliance and how did it reach its current island-endemic distribution?
-2. Look at the current (extant) distributions: each species is endemic to one or two islands; yet, some of the ancestral distributions involve three or more islands. Considering the geological history of the Hawaiian Archipelago, do you think this is plausible?
-3. Do you observe any pattern of island dispersal?
+2. Look at the current (extant) distributions: each species is endemic to one or two islands; yet, some of the ancestral distributions involve three or more islands. Notice that the model prefers a widespread ancestral range for the silversword alliance (KOH, KMH, or KM) approximately four million years ago when only Kauai existed. Considering the geological history of the Hawaiian Archipelago, do you think this is plausible? 
+3. Do you observe any common pattern of island dispersal?
 
 ## References 
 
