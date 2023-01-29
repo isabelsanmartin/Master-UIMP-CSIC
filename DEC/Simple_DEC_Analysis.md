@@ -4,7 +4,7 @@ In this tutorial, we are going to program a Bayesian inference biogeographic ana
 
 ## Study group
 
-This Tutorial, as the one in RevBayes (website) presents an application of DEC to the silversword alliance, a clade of angiosperm plants that are endemic to the Hawaiian Archipelago. The silversword alliance is considered one of the best examples of adaptive radiation in plants: Hawaiian-endemic species in the group encompasses trees, shrubs, subshrubs, mat-plants, monocarpic and polycarpic rosette plants, cushion plants, and vines that occur across a broad environmental spectrum, from rainforests to desert-like settings (Baldwin & Sanderson, 1998). Because the age of the islands (Carlquist, 1974) and the age of the silversword alliance (Baldwin & Sanderson, 1998) are well known, this makes an ideal case study to explore the DEC model and its implementation within the RevBayes environment.
+This Tutorial, as the one in RevBayes (website) presents an application of DEC to the silversword alliance, a clade of angiosperm plants that are endemic to the Hawaiian Archipelago. The silversword alliance is considered one of the best examples of adaptive radiation in plants: Hawaiian-endemic species in the group encompasses trees, shrubs, subshrubs, mat-plants, monocarpic and polycarpic rosette plants, cushion plants, and vines that occur across a broad environmental spectrum, from rainforests to desert-like settings (Baldwin & Sanderson, 1998). Because the age of the islands (Carlquist, 1959) and the age of the silversword alliance (Baldwin & Sanderson, 1998) are well known, this makes an ideal case study to explore the DEC model and its implementation within the RevBayes environment.
 
 
 ## Data description and access
@@ -18,12 +18,12 @@ cp -p silversword.n4.range.nex data/
 cp -p silversword.tre data/
 ```
 
-Take a look at the *silversword.tre* file. It contains a dated molecular phylogeny of the silversword alliance: 35 species/subspecies within 3 genera: **Argyranthemum**, **Dubautia**, **Wilkesia**, with branches measured in units of time, as million years (Mya). The timetree was generated using a ITS dataset, calibrated with external evidence: based on the age of divergence from its stem relatives: Western North American genera Madial and Raillardiopsis, which was dated around the shift from a summer-wet to summer-dry climate began abruptly in western North America at 15 Ma.
+Take a look at the *silversword.tre* file. It contains a dated molecular phylogeny of the **silversword alliance**: 35 species/subspecies within 3 genera: *Argyranthemum*, *Dubautia*, *Wilkesia*, with branches measured in units of time, as million years (Mya). The timetree was generated using a ITS dataset, calibrated with external evidence: based on the age of divergence from its stem relatives: Western North American genera *Madial* and *Raillardiopsis*, which was dated around the shift from a summer-wet to summer-dry climate began abruptly in western North America at 15 Ma.
 
 ![Figure2](figures/Figure2.jpg "Figure 2")*Molecular dated phylogeny of the silversword alliance.
 
 Next, take look at the *silversword.n4.range.nex*. It includes the distribution of the species encoded as presence-absence data. 
-Area coding follows those in the Figure below: *K: Kauai*, *O: Ohau*, *M: Maui-Nui*: a complex formed by three islands: Maui, Nui, and, *H: Hawaii*. These four major islands have remained isolated by deep ocean barriers since their formation five million years ago. The islands forming the Maui-Nui complex were probably connected by shallow waters during the Ice Ages.
+Area coding follows those in the Figure below: **K: Kauai**, **O: Ohau**, **M: Maui-Nui**: a complex formed by three islands: Maui, Nui, and, **H: Hawaii**. These four major islands have remained isolated by deep ocean barriers since their formation five million years ago. The islands forming the Maui-Nui complex were probably connected by shallow waters during the Ice Ages.
 
 ![Figure3](figures/Figure3.png "Figure 3")*Distribution range of the silversword alliance with the four "major islands" .
 
@@ -410,6 +410,5 @@ And a second script to generate a figure with the anagenetic (stochastic mapping
 
 ## References 
 
-Godefroid, M., Meseguer, A. S., Sauné, L., Genson, G., Streito, J. C., Rossi, J. P., ... & Rasplus, J. Y. (2019). Restriction-site associated DNA markers provide new insights into the evolutionary history of the bark beetle genus Dendroctonus. Molecular phylogenetics and evolution, 106528.
-
-Sanmartin, I., Enghoff, H., Ronquist, F., 2001. Patterns of animal dispersal, vicariance and diversification in the Holarctic. Biol. J. Linn. Soc. 73, 345–390.
+Baldwin B.G., Sanderson M.J. 1998. Age and rate of diversification of the Hawaiian silversword alliance (Compositae). Proceedings of the National Academy of Sciences. 95:9402–9406. 10.1073/pnas.95.16.940
+Carlquist S. 1959. Studies on Madinae: anatomy, cytology, and evolutionary relationships. Aliso. 4:171–236. 10.5642/aliso.19590402.02
