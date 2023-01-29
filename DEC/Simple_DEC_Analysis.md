@@ -4,7 +4,7 @@ In this tutorial, we are going to program a Bayesian inference biogeographic ana
 
 ## Study group
 
-This Tutorial, as the one in RevBayes (website) presents an application of DEC to the silversword alliance, a clade of angiosperm plants that are endemic to the Hawaiian Archipelago. The silversword alliance is considered one of the best examples of adaptive radiation in plants: Hawaiian-endemic species in the group encompasses trees, shrubs, subshrubs, mat-plants, monocarpic and polycarpic rosette plants, cushion plants, and vines that occur across a broad environmental spectrum, from rainforests to desert-like settings (Baldwin & Sanderson, 1998). Because the age of the islands (Carlquist, 1959) and the age of the silversword alliance (Baldwin & Sanderson, 1998) are well known, this makes an ideal case study to explore the DEC model and its implementation within the RevBayes environment.
+This Tutorial, as the one in RevBayes (website) presents an application of DEC to the `silversword alliance`, a clade of angiosperm plants that are endemic to the Hawaiian Archipelago. The silversword alliance is considered one of the best examples of adaptive radiation in plants: it includes trees, shrubs, subshrubs, mat-plants, monocarpic and polycarpic rosette plants, cushion plants, and vines that occur across a broad environmental spectrum, from rainforests to desert-like settings (Baldwin & Sanderson, 1998). Because the age of the islands (Carlquist, 1959) and the age of the silversword alliance (Baldwin & Sanderson, 1998) are well known, this makes an ideal case study to explore the DEC model and its implementation within the RevBayes environment.
 
 
 ## Data description and access
@@ -23,9 +23,9 @@ Take a look at the *silversword.tre* file. It contains a dated molecular phyloge
 ![Figure2](figures/Figure2.jpg "Figure 2")*Molecular dated phylogeny of the silversword alliance.
 
 Next, take look at the *silversword.n4.range.nex*. It includes the distribution of the species encoded as presence-absence data. 
-Area coding follows those in the Figure below: **K: Kauai**, **O: Ohau**, **M: Maui-Nui**: a complex formed by three islands: Maui, Nui, and, **H: Hawaii**. These four major islands have remained isolated by deep ocean barriers since their formation five million years ago. The islands forming the Maui-Nui complex were probably connected by shallow waters during the Ice Ages.
+Area coding follows those in the Figure below: **K: Kauai**: a complex formed by Kauai and Okai, **O: Ohau**, **M: Maui-Nui**: a complex formed by four islands: Maui, Nui, Lanai and Molokai, **H: Hawaii**. These four major islands groups have remained isolated by deep ocean barriers since their formation five million years ago. The islands forming the Maui-Nui complex and the Kauai complex were probably connected by shallow waters during the Ice Ages.
 
-![Figure3](figures/Figure3.png "Figure 3")*Distribution range of the silversword alliance with the four "major islands" .
+![Figure3](figures/Figure3.png "Figure 3")*Distribution range of the silversword alliance with the four *major island groups* .
 
 Because there are four discrete areas and we accept all possible combinations, the area ranges used in this exercise are 15 + the empty set (the species is absent from all areas).
 {% table table1 %}
