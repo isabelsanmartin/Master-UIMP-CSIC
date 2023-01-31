@@ -1,0 +1,39 @@
+# Este script se puede correr desde la línea de comandos fuera de RevBayes, escribiendo
+# rb make_anc_state.Rev
+# O dentro de RevBayes, escribiendo:
+# source("make_anc_state.Rev")
+
+out_str = "output/simple"
+
+out_state_fn = out_str + ".states.log"
+
+out_phy_fn   = out_str + ".tre"
+out_mcc_fn   = out_str + ".mcc.tre"
+
+# Calculamos el árbol MCC como "árbol de referencia"
+tree_trace = readTreeTrace(file=out_phy_fn, treetype="clock")
+tree_trace.setBurnin(0.25)
+mcc_tree = mccTree(tree_trace, file=out_mcc_fn, mean=false)
+
+# Leemos el archivo con los resultados de las reconstrucciones ancestrales 
+state_trace = readAncestralStateTrace(file=out_state_fn)
+
+# Y lo asignamos al árbol
+state_tree_trace = readAncestralStateTreeTrace(file=out_phy_fn, treetype="clock")
+
+# Aplicamos el burnin para sólo utilizar los valores una vez que la MCMC ha alcanzado estacionaridad
+n_burn = floor(0.25 * state_tree_trace.getNumberSamples())
+
+# Estimamos el ancestral state tree
+anc_tree = ancestralStateTree(tree=mcc_tree,
+                              ancestral_state_trace_vector=state_trace,
+                              tree_trace=state_tree_trace,
+                              include_start_states=true,
+                              file=out_str+".ase.tre",
+                              burnin=n_burn,
+                              summary_statistic="MAP",
+                              site=1)
+
+# exit RevBayes
+quit()
+                             
