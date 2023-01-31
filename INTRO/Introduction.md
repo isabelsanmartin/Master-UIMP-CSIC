@@ -22,7 +22,7 @@ First, you need to download the software in the version that is appropriate for 
 
 Next, download the data files and scripts for the practice. 
 
-Access the Phylogenetics Workshop lab materials in Github [Phylogenetic-Workshop-Chamela] (https://github.com/isabelsanmartin/Phylogenetics-Workshop-Chamela), and download the scripts and files for the practice.
+Access the Phylogenetics Workshop lab materials in Github [Master-UIMP-CSIC] (https://github.com/isabelsanmartin/Master-UIMP-CSIC, and download the scripts and files for the practice.
 You would see that there are several files, including scripts and data we need for the practice: `Intro.Rev`, `myScript.sh`, and `myScript-cluster.sh`
 OBS!! The scripts and  files should be downloaded into the folder containing the *RevBayes* executable (the `rb` binary in the Mac). Inside this folder, create a new folder `INTRO` and copy the `Intro.Rev` and `myScript.sh` files into this folder.
 
