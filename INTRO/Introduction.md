@@ -28,8 +28,8 @@ OBS!! The scripts and  files should be downloaded into the folder containing the
 
 ```
 mkdir INTRO
-cp -p Intro.Rev lab_1/
-cp -p myScript.sh lab1/
+cp -p Intro.Rev INTRO/
+cp -p myScript.sh INTRO/
 ```
 
 ## Launching RevBayes from your computer
