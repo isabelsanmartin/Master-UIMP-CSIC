@@ -191,7 +191,7 @@ Take a look at the Q matrix by typing `Q` in your command line. What is the stru
 
 Build the matrix of cladogenetic transition probabilities. 
 Notice this is not an instantaneous rate matrix but a matrix of transition probabilities because cladogenetic events are not defined as a CTMC.
-Only sympatry, `Q`, (wide or peripatry, narrow) and allopatry, `a` (vicariance) are allowed.
+Only sympatry, `s`, (wide or peripatry, narrow or single-area sympatry) and allopatry, `a` (vicariance) are allowed.
 
 We assign a flat fixed prior through a simplex (same weight for the two events)
 ```
