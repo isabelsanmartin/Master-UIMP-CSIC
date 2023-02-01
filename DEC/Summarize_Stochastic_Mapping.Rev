@@ -21,4 +21,4 @@ char_map_tree = characterMapTree(tree=T,
                  burnin=burnin, 
                  num_time_slices=n_time_slices)
 
-q()
+# q()
