@@ -323,6 +323,7 @@ Get the ancestral state trace from simple.states.log
 state_trace = readAncestralStateTrace(file=out_state_fn)
 ```
 Get the ancestral state tree trace from simple.tre. It is important to use `readAncestralStateTreeTrace` and not `readTreeTrace`, as in the phylogenetic exercises to properly annotate the tree with ancestral states.
+OBS: If this part of the script gives an error message (it cannot find a file called "simple.tre.trees"), duplicate the file "simple.tre" and name it as "simple.tre.trees", so that there are two identical files containing the 10.000 trees, but with different names).
 ```
 
 tree_trace = readAncestralStateTreeTrace(file=out_tree_fn, treetype="clock")
