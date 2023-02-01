@@ -1,0 +1,217 @@
+#!/usr/bin/rb
+
+# Este script corre el modelo estratificado "epoch" con la tasa basal de dispersión (baseline dispersal rate) "escalada" 
+# de acuerdo con conectividad geológica y distancia geográfica, utilizando como ejemplo la alianza "espada plateada" "silversword".
+
+# Primero asignamos los datos a "objetos" o "filename holders". Abre cada uno de estos archivos y fíjate en lo que contienen.
+range_fn = "data/silversword.n4.range.nex"
+tree_fn   = "data/silversword.tre"
+out_fn   = "output/epoch"
+geo_fn   = "data/hawaii.n4"
+times_fn = geo_fn + ".times.txt"
+dist_fn  = geo_fn + ".distances.txt"
+
+########
+# Data #
+########
+
+# Ahora leemos el rango de distribución de cada especie codificado en formato binario (01) presencia-ausencia (p. ej. 0011
+dat_range_01 = readDiscreteCharacterData(range_fn)
+n_areas <- dat_range_01.nchar()
+
+# Siguiente, vamos reducir el número de estados. Actualmente no existen especies que estén
+# en más de 2 áreas (islas). Por tanto, vamos a limitar los rangos o estados ancestrales a combinaciones de dos áreas
+# Había 16 rangos for 4 áreas. 
+# Con la nueva codificación, hemos reducido a 11 (n_states = 11).
+# Fíjate que el estado nulo "empty range" (0000) es un estado del modelo DEC!! 
+
+max_areas <- 2
+n_states <- 0
+for (k in 0:max_areas) n_states += choose(n_areas, k)
+
+# Tercero, vamos a usar la nueva codificación "n_states" para reformatear el dataset con un espacio más reducido
+# Y luego lo convertimos en código máquina con Números Naturales (p. ej. 0, 1, 2, 3....11)
+dat_range_n = formatDiscreteCharacterData(dat_range_01, "DEC", n_states)
+
+# Ahora definimos el numero de "épocas" o "estratos", y sus límites que están definidos en el fichero ".times.txt" 
+time_bounds <- readDataDelimitedFile(file=times_fn, delimiter=" ")
+n_epochs <- time_bounds.nrows()
+
+# Definimos la conectividad entre islas o áreas en cada uno de los estratos o épocas
+for (i in 1:n_epochs) {
+    epoch_fn = geo_fn + ".connectivity." + i + ".txt"
+    connectivity[i] <- readDataDelimitedFile(file=epoch_fn, delimiter=" ")
+}
+
+# Finalmente, vamos a reescalar la tasa de dispersión de base por la distancia geográfica entre islas en el fichero ".distances.txt"
+
+distances <- readDataDelimitedFile(file=dist_fn, delimiter=" ")
+
+# Ahora indicamos el número de generaciones y los movimientos de la cadena MCMC
+n_gen = 5000
+moves = VectorMoves()
+monitors = VectorMonitors()
+
+# Y anotamos la traducción de los rangos ancestrales desde código máquina (0,1,2...11) a código binario (1000, 0100, ....1100) 
+state_desc = dat_range_n.getStateDescriptions()
+
+# Y lo escribimos en un fichero llamado ".state_labels.txt"
+state_desc_str = "state,range\n"
+for (i in 1:state_desc.size())
+{
+    state_desc_str += (i-1) + "," + state_desc[i] + "\n"
+}
+write(state_desc_str, file=out_fn+".state_labels.txt")
+
+
+###############
+# Filogenia #
+###############
+
+# Leemos el árbol filogenético
+tree <- readTrees(tree_fn)[1]
+
+#######################
+# Modelo biogeográfico estratificado #
+#######################
+
+# Primero definimos la tasa de dispersión de base que vamos a estimar "rate_bg"
+rate_bg ~ dnLoguniform(1E-4,1E2)
+rate_bg.setValue(1E-2)
+moves.append( mvScale(rate_bg, weight=4) )
+
+# La tasa de dispersión relativa escalar la fijamos en 1
+dispersal_rate <- 1.0
+
+# Definimos el "factor escalar por distancia" que vamos a estimar y que nos dirá cómo 
+# de importante es la distancia geográfica en la probabilidad de dispersión del grupo
+distance_scale ~ dnUnif(0,20)
+distance_scale.setValue(0.01)
+moves.append( mvScale(distance_scale, weight=3) )
+
+# Finalmente, con todos estos elementos construimos la matriz Q de dispersión (una por cada época o estrato)
+for (i in 1:n_epochs) {
+    for (j in 1:n_areas) {
+        for (k in 1:n_areas) {
+            dr[i][j][k] <- 0.0
+            if (connectivity[i][j][k] > 0) {
+                dr[i][j][k] := dispersal_rate * exp(-distance_scale * distances[j][k])
+            }
+        }
+    }
+}
+
+# Ahora, definimos la probabilidad de extinción por área (tasa de extirpación)
+log_sd <- 0.5
+log_mean <- ln(1) - 0.5*log_sd^2
+extirpation_rate ~ dnLognormal(mean=log_mean, sd=log_sd)
+moves.append( mvScale(extirpation_rate, weight=2) )
+
+# Y definimos la matriz Q de extinctión
+for (i in 1:n_epochs) {
+    for (j in 1:n_areas) {
+        for (k in 1:n_areas) {
+            er[i][j][k] <- 0.0
+        }
+        er[i][j][j] := extirpation_rate
+    }
+}
+
+# Construimos el modelo DEC estratificado para la parte anagenetica (matriz Q)
+# Fíjate que hay una para cada estrato
+for (i in 1:n_epochs) {
+    Q_DEC[i] := fnDECRateMatrix(dispersalRates=dr[i],
+                                extirpationRates=er[i],
+                                maxRangeSize=max_areas)
+}
+
+# Construye las "épocas" aplicando los límites entre ellas ("time boundaries")
+for (i in 1:n_epochs) {
+    time_max[i] <- time_bounds[i][1]
+    time_min[i] <- time_bounds[i][2]
+
+    if (i == n_epochs) {
+        epoch_times[i] <- 0.0
+    } else {
+        epoch_times[i] ~ dnUniform(time_min[i], time_max[i])
+        moves.append( mvSlide(epoch_times[i], delta=(time_max[i]-time_min[i])/2) )
+    }
+}
+
+# Combinamos las épocas y las matrices Q en una matriz Q estratificada
+Q_DEC_epoch := fnEpoch(Q=Q_DEC, times=epoch_times, rates=rep(1, n_epochs))
+
+    
+# Ahora construimos la parte de DEC que modela la cladogénesis o eventos de especiación (P_DEC)
+# Permitimos dos tipos de especiación: alopátrica ("a" = vicarianza AB = A y B)
+# Simpátrica: "s", que incluye "simpatría" A = A y A
+# y "peripatría" AB = AB y A
+clado_event_types <- [ "s", "a" ]
+
+# En este ejercicio en vez de darles la misma probabilidad a las dos, las estimamos 
+p_sympatry ~ dnUniform(0,1)
+p_allopatry := abs(1.0 - p_sympatry)
+
+clado_type_probs := simplex(p_sympatry, p_allopatry)
+moves.append( mvSlide(p_sympatry, weight=2) )
+
+P_DEC := fnDECCladoProbs(eventProbs=clado_type_probs,
+                         eventTypes=clado_event_types,
+                         numCharacters=n_areas,
+                         maxRangeSize=max_areas)
+
+
+# En este ejercicio forzamos el nodo raíz a empezar en Kauai.
+# Esto es porque es un modelo geológico y queremos testar la hipótesis de que el grupo se originó en la primera isla: Kauai 
+
+rf_DEC_tmp    <- rep(0, n_states)
+rf_DEC_tmp[2] <- 1
+rf_DEC    <- simplex(rf_DEC_tmp)
+
+# Finalmente, construimos el modelo DEC con Q_DEC y P_DEC, sus dos componentes
+m_bg ~ dnPhyloCTMCClado(tree=tree,
+                           Q=Q_DEC_epoch,
+                           cladoProbs=P_DEC,
+                           branchRates=rate_bg,
+                           rootFrequencies=rf_DEC,
+                           type="NaturalNumbers",
+                           nSites=1)
+    
+# Y lo unimos a los datos
+m_bg.clamp(dat_range_n)
+
+############
+# Monitores #
+############
+# Creamos una serie de monitores que van a escribir los datos en la pantalla: mnScreen o en varios ficheros.
+# Puedes cambiar la frecuencia con que se visualiza o escribe cambiando printgen= 10 a printgen=1. Siempre el mismo valor en todas las líneas!!
+
+monitors.append( mnScreen(printgen=100, rate_bg, extirpation_rate, distance_scale) )
+monitors.append( mnModel(file=out_fn+".model.log", printgen=10) )
+monitors.append( mnFile(tree, filename=out_fn+".tre", printgen=10) )
+monitors.append( mnJointConditionalAncestralState(tree=tree,
+                                                       ctmc=m_bg,
+                                                       type="NaturalNumbers",
+                                                       withTips=true,
+                                                       withStartStates=true,
+                                                       filename=out_fn+".states.log",
+                                                       printgen=10) )
+monitors.append( mnStochasticCharacterMap(ctmc=m_bg,
+                                         filename=out_fn+".stoch.log",
+                                         printgen=10) )
+
+############
+# Análisis #
+############
+
+# Creamos el modelo a partir del modelo gráfico diseñado arriba (model graph)
+mymodel = model(m_bg)
+
+# Ahora creamos la cadena MCMC que muestreará los parámetros y áreas ancestrales
+mymcmc = mcmc(mymodel, monitors, moves)
+
+# Finalmente corremos el análisis MCMC
+mymcmc.run(n_gen)
+
+# exit
+# quit()
