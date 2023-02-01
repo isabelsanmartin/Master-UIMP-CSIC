@@ -35,5 +35,5 @@ anc_tree = ancestralStateTree(tree=mcc_tree,
                               site=1)
 
 # exit RevBayes
-quit()
+# quit()
                              
