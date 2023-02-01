@@ -2,9 +2,9 @@ source("scripts/plot_anc_range.util.R")
 
 # file names
 fp = "./" # edit to provide an absolute filepath
-plot_fn = paste(fp, "output_3/simple.range.pdf",sep="")
-tree_fn = paste(fp, "output_3/simple.ase.tre", sep="")
-label_fn = paste(fp, "output_3/simple.state_labels.txt", sep="")
+plot_fn = paste(fp, "output/simple.range.pdf",sep="")
+tree_fn = paste(fp, "output/simple.ase.tre", sep="")
+label_fn = paste(fp, "output/simple.state_labels.txt", sep="")
 color_fn = paste(fp, "range_colors.n4.txt", sep="")
 
 install.packages("devtools", dependencies=TRUE)
@@ -35,7 +35,7 @@ pp=plotAncStatesPie(t = ancstates,
 # get plot dimensions
 x_phy = max(pp$data$x)       # get height of tree
 x_label = 3.5                # choose space for tip labels
-x_start = 7                  # choose starting age (greater than x_phy)
+x_start = 5.5                # choose starting age (greater than x_phy)
 x0 = -(x_start - x_phy)      # determine starting pos for xlim
 x1 = x_phy + x_label         # determine ending pos for xlim
 
