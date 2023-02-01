@@ -1,6 +1,6 @@
 # Setting a biogeographic analysis with DEC
 
-In this tutorial, we are going to program a Bayesian inference biogeographic analysis in RevBayes using the using the `Rev` language and an empirical dataset: Dendroctonus. The three main components (that we have learned about so far) are *the Distribution-coded discrete areas*, the *anagenetic component: the Q matrix* and *the cladogenetic component: range inheritance scenarios*. We will program them in this order.
+In this tutorial, we are going to program a Bayesian inference biogeographic analysis in RevBayes using the using the `Rev` language and an empirical dataset: silversword alliance. The three main components (that we have learned about so far) are *the Distribution-coded discrete areas*, the *anagenetic component: the Q matrix* and *the cladogenetic component: range inheritance scenarios*. We will program them in this order.
 
 ## Study group
 
