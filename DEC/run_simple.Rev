@@ -6,7 +6,7 @@
 # Archivos
 range_fn = "data/silversword.n4.range.nex"
 tree_fn  = "data/silversword.tre"
-out_fn   = "output_3/simple"
+out_fn   = "output/simple"
 
 ### Primero leemos los datos de distribución en formato binario (0/1). Abre el fichero en Notepad y mira su estructura 
 dat_range_01 = readDiscreteCharacterData(range_fn)
@@ -120,7 +120,7 @@ m_bg.clamp(dat_range_n)
 
 ##  Decidimos con cuánta frecuencia, los resultados se escriben con printgen= #
 
-monitors.append( mnScreen(printgen=100, rate_bg) )
+monitors.append( mnScreen(printgen=100, rate_bg, extirpation_rate) )
 monitors.append( mnModel(file=out_fn+".model.log", printgen=1) )
 monitors.append( mnFile(tree, filename=out_fn+".tre", printgen=1) )
 
