@@ -120,8 +120,7 @@ n_gen = 3000
 
 ### Build the Anagenetic component of the model: the CTMC Q matrix
 
-Read the tree. If there is more than one tree, we keep an index. For this tutorial, we assume we know the dated species phylogeny
-without error
+Read the tree. If there is more than one tree, we keep an index. For this tutorial, we assume we know the dated species phylogeny without error
 ```
 tree <- readTrees(tree_fn)[1]
 ```
@@ -287,7 +286,7 @@ quit()
 ### Running the analysis in script mode (inside RevBayes)
 If you want to run the analysis above without typing every command at the RevBayes prompt, you can source the script, as we learnt in *INTRO*. Launch Source the `run_simple.Rev` script, which contains all commands above (OBS!! Remember the quotation marks!).
 ```
-source("run_simple.Rev`)
+source("run_simple.Rev")
 ```
 You can also run the script outside RevBayes, directly in your command line
 ```
@@ -348,7 +347,7 @@ with ancestral states before and after cladogenetic events. Notice that there ar
 
 OBS: As with the initial run file, you can source the script, containing  all commands above.
 ```
-source("make_anc_state.Rev`)
+source("make_anc_state.Rev")
 ```
 You can also run the script outside RevBayes, directly in your command line
 ```
@@ -361,10 +360,10 @@ To complete our visualization of the biogeographic model, we are going to recons
 
 First we read the tree/s
 ```
-T = readTrees("simple.tre")[1]
+T = readTrees("silversword.tre")[1]
 ```
 
-Next, we define the burnin (the number of samples to remove before reaching stationarity)
+Next, we define the burnin (the number of samples to remove before reaching stationarity). We also define the number of time slices we divide the phylogeny into (for each time slice, we condition the stochastic map to the nodal ancestral states).
 ```
 burnin=0.2
 n_time_slices = 500
@@ -374,12 +373,8 @@ We read in the sampled character histories
 ```
 anc_states_SCHM = readAncestralStateTrace("output/simple.stoch.log")
 ```
-And summarize the stochastic character maps
-```
-SummarizeCharacterMaps(anc_states, T, file="output/events.csv", burnin=0.1)
-```
 
-Make summary tree. We create two files: one of them `simple_marginal_character.tree` contains the marginal probabilities for the anagenetic events. The second, `simple_marginal_posterior.tree` gives the support for those events.
+Make summary tree. We create two files: one of them `simple_marginal_character.tree` contains the marginal probabilities for the anagenetic events. The second, `simple_marginal_posterior.tree` gives the support for those events. These two files will be stored on a folder called `output-stochastic`
 ```
 char_map_tree = characterMapTree(tree=T, 
                  ancestral_state_trace_vector=anc_states_SCHM, 
@@ -394,16 +389,16 @@ char_map_tree = characterMapTree(tree=T,
 q()
 
 ## Plotting nice figures
-Finally, it is possible to generate a figure with ancestral states that is suitable for publication using the `R` package [RevGadgets] ("https://github.com/revbayes/RevGadgets")
+Finally, it is possible to generate figures with the nodal ancestral states and the stochastic maps that are suitable for publication, using the `R` package [RevGadgets] ("https://github.com/revbayes/RevGadgets")
 
-I have included two R files: one to generate a figure with the cladogenetic (ancestral range) reconstructions:
+I have included two R script: one script is used to generate a figure with the cladogenetic (ancestral range) reconstructions: `plot_anc_range.simple.R`
 
 
 ![Figure5](figures/Figure5.png "Figure 5")*Tree with ancestral ancestral ranges reconstructed for the nodes in the tree for the "simple" analysis. 
 
-And a second script to generate a figure with the anagenetic (stochastic mapping) reconstructions:
+And a second script to generate a figure with the anagenetic (stochastic mapping) reconstructions: `Plotting_Stochastic_Mapping.R`
 
-![Figure6](figures/Figure6.png "Figure 6")* a) Tree with events of biogeographic change plotted along the phylogeny for the "simple" analysis. b) Support for the anagenetic events as posterior probabilities.
+![Figure6](figures/Figure6.png "Figure 6")* a) Tree with events of biogeographic change plotted along the phylogeny for the "simple" analysis. b) Tree with support for the anagenetic events as posterior probabilities.
 
 ## Questions
 
