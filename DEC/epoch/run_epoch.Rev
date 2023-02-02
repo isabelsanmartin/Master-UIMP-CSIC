@@ -1,10 +1,10 @@
 #!/usr/bin/rb
 
 # filenames
-range_fn = "data/n4/silversword.n4.range.nex"
-tree_fn   = "data/n4/silversword.tre"
+range_fn = "data/silversword.n4.range.nex"
+tree_fn   = "data/silversword.tre"
 out_fn   = "output/epoch"
-geo_fn   = "data/n4/hawaii.n4"
+geo_fn   = "data/hawaii.n4"
 times_fn = geo_fn + ".times.txt"
 dist_fn  = geo_fn + ".distances.txt"
 
