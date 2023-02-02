@@ -13,7 +13,7 @@ The silversword alliance is considered one of the best examples of adaptive radi
 ## Data description and access
 
 First, download the datasets and scripts needed to complete the task.
-Move into the `DEC` folder, where you can find all scripts and files needed for the practice.  Inside this folder, create a second folder and name it `data`. Copy the *silversword.n4.range.nex* and the *silversword.tre* 
+Move into the `DEC` folder, where you can find all scripts and files needed for the practice.  Inside this folder, create a second folder and name it `data`. Copy the files: *silversword.n4.range.nex* and *silversword.tre* into this folder.
 
 ```
 mkdir data
