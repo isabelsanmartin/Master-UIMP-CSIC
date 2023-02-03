@@ -9,10 +9,10 @@ color_fn = paste(fp, "range_colors.n4.txt", sep="")
 
 #Attention: uncomment these commands if you haven't installed RevGadgets, devtools and dependencies. Alternatively, skip (comment out) these commands if you have already installed RevGadgets, devtools and dependencies
 
-install.packages("devtools", dependencies=TRUE)
+#install.packages("devtools", dependencies=TRUE)
 library(devtools)
-install_github("GuangchuangYu/ggtree")
-install_github("revbayes/RevGadgets")
+#install_github("GuangchuangYu/ggtree")
+#install_github("revbayes/RevGadgets")
 library(RevGadgets)
 library(ggtree)
 
