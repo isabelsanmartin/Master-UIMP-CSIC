@@ -14,6 +14,7 @@ library(devtools)
 install_github("GuangchuangYu/ggtree")
 install_github("revbayes/RevGadgets")
 library(RevGadgets)
+library(ggtree)
 
 # get state labels and state colors
 labs <- c("1"  = "K",   "2"  = "O", 
