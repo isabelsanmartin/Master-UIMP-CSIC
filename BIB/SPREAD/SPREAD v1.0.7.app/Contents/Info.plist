@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<plist version="1.0">
+  <dict>
+    <key>CFBundleName</key>
+    <string>SPREAD v1.0.7</string>
+    <key>CFBundleShortVersionString</key>
+    <string>1.0.7</string>
+    <key>CFBundleGetInfoString</key>
+    <string>SPREAD_v1.0.7, Copyright 2011, Filip Bielejec, Andrew Rambaut, Marc A. Suchard &amp; Philippe Lemey</string>
+    <key>CFBundleAllowMixedLocalizations</key>
+    <string>false</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleExecutable</key>
+    <string>JavaApplicationStub</string>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>English</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleSignature</key>
+    <string>????</string>
+    <key>CFBundleIconFile</key>
+    <string>SPREAD.icns</string>
+    <key>CFBundleIdentifier</key>
+    <string>spread</string>
+    <key>Java</key>
+    <dict>
+      <key>MainClass</key>
+      <string>app.SpreadApp</string>
+      <key>JVMVersion</key>
+      <string>1.5+</string>
+      <key>ClassPath</key>
+      <array>
+        <string>$JAVAROOT/spread.jar</string>
+        <string>$JAVAROOT/quaqua.jar</string>
+        <string>$JAVAROOT/libquaqua.jnilib</string>
+        <string>$JAVAROOT/libquaqua64.jnilib</string>
+      </array>
+      <key>VMOptions</key>
+      <string>-Xmx512M</string>
+      <key>Arguments</key>
+      <string/>
+      <key>Properties</key>
+      <dict>
+        <key>apple.laf.useScreenMenuBar</key>
+        <string>true</string>
+      </dict>
+    </dict>
+  </dict>
+</plist>

@@ -1,0 +1,52 @@
+2015: SPREAD version 1.0.7
+------------------------------------------------
+* Fixed bug in Continuous tree template that caused empty KMLs to be generated
+* Moved state attribute name spinner after the tree file loader (in the order the files should be loaded)
+* Fixes bug where bin/spread was not executable for Linux
+* Fixed bug when no file was loaded and setup was clicked (Issue #7)
+* Fixed bug when incorrect State was selected and an exception was raised about Object->String cast error instead
+  of the error about selecting a correct state.
+* Fixed an issue with ant build for linux where release/Linux/lib directory did not exist that prevented the build
+  from succeeding
+* Removed release/common/Changelog from git as it is copied with ant from main Changelog
+
+March 4, 2013: SPREAD version 1.0.6 released
+------------------------------------------------
+* Combo box for choosing state attribute name in Discrete tree tab.
+* Combo box for choosing indicator attribute name in Discrete Bayes Factor test tab
+* Combo box for choosing state attribute name in Continuous tree tab.
+* Combo boxes for attribute names in Time Slicer.
+* Log files parser compatible with BEAST 1 and BEAST 2.
+* Improved handling of exceptions in Open and Save dialogs
+* Status bar for common messages
+* Kmlframework merged into sources (New BSD license)
+
+November 18, 2012: SPREAD version 1.0.5 released
+------------------------------------------------
+
+* Improved custom time slicer
+* Progress bar for tree slicer.
+* Automated jar detection.
+* Column for posterior probabilities value included in the terminal output for BF calculation.
+* Some changes to error handling.
+* BibTeX entry in help message
+* We go back to the old name to avoid users getting confused
+
+April 21, 2012: SPREAD-phy version 1.0.4 released
+------------------------------------------------
+
+* Name change: prepended 'phy' for phylogeny to the software name to conform with Debian naming convention.
+* SPREAD-phy now has it's own build system
+* Removed ColorPicker dependency by combining the original code. This code (in the colorpicker package) is released under 
+  New BSD license.
+* Row numbers in location coordinates editor  
+* Fixed bug in Bayes factor values sort function (introduced in v1.0.3)
+
+February 4, 2012: SPREAD version 1.0.3 released
+-----------------------------------------------
+
+* The results of Bayes Factor test are now presented in ascending order, both in the Terminal window and in the KML output.
+* The weights used in Time Slicer template are now printed to the Terminal window.
+* The tool panes size can be adjusted for viewing the inner Spread maps on smaller screens. 
+* Made several other minor changes.
+
